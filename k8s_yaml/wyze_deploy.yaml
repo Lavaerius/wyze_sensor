@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    run: wyze-sensor
+  name: wyze-sensor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: wyze-sensor
+  template:
+    metadata:
+      labels:
+        run: wyze-sensor
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - wyze-sensor
+      containers:
+      - image: registry.local/wyze_sensor:v0.0.2
+        imagePullPolicy: IfNotPresent
+        name: wyze-sensor
+        volumeMounts:
+        - mountPath: /dev/hidraw0
+          name: wyze-device
+        securityContext:
+          privileged: true
+        env:
+          - name: MQTT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: wyze-mqtt-username
+                key: wyse-mqtt-username
+                optional: false
+          - name: MQTT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: wyze-mqtt-password
+                key: wyse-mqtt-password
+                optional: false
+      volumes:
+      - name: wyze-device
+        hostPath:
+          path: /dev/hidraw0

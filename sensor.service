@@ -1,0 +1,10 @@
+[Unit]
+Description=sensor bridge
+Documentation=nope
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/sensor.py
+
+[Install]
+WantedBy=multi-user.target
