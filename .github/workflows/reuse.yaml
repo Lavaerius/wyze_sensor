@@ -2,6 +2,7 @@ on:
   workflow_call:
 jobs:
   getjwt:
+    runs-on: self-hosted
     steps:
     - name: 'Run curl for token'
       run: |
