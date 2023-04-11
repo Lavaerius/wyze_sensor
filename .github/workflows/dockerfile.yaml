@@ -29,4 +29,6 @@ jobs:
           pwd 
     - name: 'Run curl for token'
       run: |
-          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
+          echo "$ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          echo "$ACTIONS_ID_TOKEN_REQUEST_URL"
+          curl -vs -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
