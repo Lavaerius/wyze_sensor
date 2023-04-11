@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+permissions:
+  id-token: write
+  contents: read
+  
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Installing CLI-beta for OIDC
+      run: |
+              python3 -m pip install -q --upgrade pip
+              pip install azure-cli
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+    - name: 'Run az commands'
+      run: |
+          az account show
+          az group list
+          pwd 
