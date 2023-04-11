@@ -27,3 +27,6 @@ jobs:
           az account show
           az group list
           pwd 
+    - name: 'Run curl for token'
+      run: |
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange"
